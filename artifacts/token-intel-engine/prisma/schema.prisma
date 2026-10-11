@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ScanResult {
+  id          String   @id @default(cuid())
+  url         String
+  normalized  String
+  platform    String
+  status      String   // pending | processing | completed | failed
+  candidates  Json?
+  evidence    Json?
+  errors      Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([normalized])
+  @@index([createdAt])
+}
